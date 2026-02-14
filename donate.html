@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delice Client | Донат</title>
+
+  <link rel="icon" type="image/svg+xml" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #010208;
+      --accent: #005cff;
+      --accent-bright: #00d4ff;
+      --border: rgba(255, 255, 255, 0.05);
+      --text: #ffffff;
+      --text-dim: #707d91;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .universe {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+      background: radial-gradient(circle at 50% 50%, #06122d 0%, #010208 100%);
+    }
+
+    .grid-bg {
+      position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+      background-image: linear-gradient(rgba(0, 92, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 92, 255, 0.07) 1px, transparent 1px);
+      background-size: 80px 80px;
+      transform: perspective(600px) rotateX(60deg);
+      animation: gridFlow 25s linear infinite;
+    }
+
+    @keyframes gridFlow {
+      from { transform: perspective(600px) rotateX(60deg) translateY(0); }
+      to { transform: perspective(600px) rotateX(60deg) translateY(80px); }
+    }
+
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 40px 8%; position: absolute; top: 0; width: 100%; z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Montserrat', sans-serif; font-size: 1.8rem;
+      letter-spacing: 6px; text-decoration: none; color: #fff;
+      background: linear-gradient(to right, #fff, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 40px; }
+    .nav-links a {
+      color: var(--text-dim); text-decoration: none; font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 3px; font-weight: 600; transition: 0.4s;
+    }
+    .nav-links a:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
+    .nav-dl { color: var(--accent-bright) !important; border: 1px solid rgba(0, 212, 255, 0.3); padding: 8px 20px; border-radius: 5px; background: rgba(0, 92, 255, 0.05); }
+
+    .donate-container {
+      height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+    }
+
+    .donate-header { text-align: center; margin-bottom: 50px; }
+    .donate-header h1 {
+      font-family: 'Montserrat', sans-serif; font-size: clamp(2.5rem, 8vw, 5rem);
+      letter-spacing: -2px; text-transform: uppercase;
+      background: linear-gradient(to bottom, #fff, #444);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .donate-header p { color: var(--text-dim); letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem; }
+
+    .methods-grid { display: flex; gap: 30px; }
+
+    .method-card {
+      width: 350px;
+      background: rgba(255, 255, 255, 0.01);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 50px 40px;
+      text-align: center;
+      transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+    }
+
+    /* SVG иконки стили */
+    .flag-svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 25px;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
+      transition: 0.5s;
+    }
+
+    .method-card:hover .flag-svg {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 20px var(--accent));
+    }
+
+    .method-card h3 { font-family: 'Montserrat', sans-serif; letter-spacing: 2px; margin-bottom: 15px; font-size: 1.2rem; }
+
+    .donate-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 15px 35px;
+      background: #fff;
+      color: #000;
+      text-decoration: none;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.75rem;
+      transition: 0.3s;
+    }
+    .donate-link:hover { background: var(--accent); color: #fff; box-shadow: 0 0 30px var(--accent); }
+
+    .disabled { opacity: 0.4; filter: grayscale(1); cursor: not-allowed; }
+    .dev-badge {
+      margin-top: 20px;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: 1px solid var(--border);
+      padding: 10px;
+      display: block;
+    }
+
+    footer { position: absolute; bottom: 40px; width: 100%; text-align: center; }
+    .footer-text { font-size: 0.65rem; color: var(--text-dim); letter-spacing: 4px; text-transform: uppercase; }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="universe">
+  <div class="grid-bg"></div>
+</div>
+
+<nav>
+  <a href="index.html" class="logo">DELICE</a>
+  <div class="nav-links">
+    <a href="social.html">Сообщество</a>
+    <a href="faq.html">FAQ</a>
+    <a href="server.html">Сервера</a>
+    <a href="donate.html" style="color: var(--accent);">Донат</a>
+  </div>
+</nav>
+
+<div class="donate-container">
+  <header class="donate-header">
+    <h1>Пожертвования</h1>
+    <p>Поддержите разработчиков</p>
+  </header>
+
+  <div class="methods-grid">
+    <div class="method-card">
+      <svg class="flag-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="32" fill="#0057b7"/>
+        <path d="M0 32 C0 49.673 14.327 64 32 64 C49.673 64 64 49.673 64 32 H0Z" fill="#ffd700"/>
+      </svg>
+      <h3>Украинская карта</h3>
+      <p style="color: var(--text-dim); font-size: 0.85rem;">Поддержка через UAH сервисы</p>
+      <a href="https://send.monobank.ua/ATvzoHF1sG" target="_blank" class="donate-link">Задонатить</a>
+    </div>
+
+    <div class="method-card disabled">
+      <svg class="flag-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="32" fill="#fff"/>
+        <path d="M0 32 C0 49.673 14.327 64 32 64 C49.673 64 64 49.673 64 32 H0Z" fill="#d52b1e"/>
+        <rect y="21.3" width="64" height="21.4" fill="#0039a6"/>
+      </svg>
+      <h3>Русская карта</h3>
+      <p style="color: var(--text-dim); font-size: 0.85rem;">Оплата временно недоступна</p>
+      <span class="dev-badge">В разработке</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p class="footer-text">© 2026 Delice Client</p>
+</footer>
+
+<script>
+  document.onkeydown = e => {
+    if (e.keyCode == 123 || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67))) return false;
+  };
+</script>
+</body>
+</html>

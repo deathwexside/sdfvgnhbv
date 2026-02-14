@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delice Client | Сервера </title>
+
+  <link rel="icon" type="image/svg+xml" href="logo.png">  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #010208;
+      --accent: #005cff;
+      --accent-bright: #00d4ff;
+      --border: rgba(255, 255, 255, 0.05);
+      --text: #ffffff;
+      --text-dim: #707d91;
+      --rw-color: #ff4d4d;
+    }
+
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      -webkit-user-select: none; user-select: none;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* Единый фон Universe */
+    .universe {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 50%, #06122d 0%, #010208 100%);
+    }
+
+    .grid-bg {
+      position: absolute; width: 200%; height: 200%;
+      top: -50%; left: -50%;
+      background-image:
+              linear-gradient(rgba(0, 92, 255, 0.07) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 92, 255, 0.07) 1px, transparent 1px);
+      background-size: 80px 80px;
+      transform: perspective(600px) rotateX(60deg);
+      animation: gridFlow 25s linear infinite;
+    }
+
+    @keyframes gridFlow {
+      from { transform: perspective(600px) rotateX(60deg) translateY(0); }
+      to { transform: perspective(600px) rotateX(60deg) translateY(80px); }
+    }
+
+    /* Чистая навигация */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 40px 8%; position: absolute; top: 0; width: 100%; z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Montserrat', sans-serif; font-size: 1.8rem;
+      letter-spacing: 6px; text-decoration: none; color: #fff;
+      background: linear-gradient(to right, #fff, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links a {
+      color: var(--text-dim); text-decoration: none; margin-left: 40px;
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px;
+      font-weight: 600; transition: 0.4s;
+    }
+    .nav-links a:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
+
+    /* Контент */
+    .main-content {
+      height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center;
+    }
+
+    .header-box { margin-bottom: 40px; }
+    .header-box h1 {
+      font-family: 'Montserrat', sans-serif; font-size: clamp(2.5rem, 8vw, 5rem);
+      letter-spacing: -2px; text-transform: uppercase;
+      background: linear-gradient(to bottom, #fff, #444);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .header-box p { color: var(--text-dim); letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem; }
+
+    /* Одиночная карточка ReallyWorld */
+    .server-focus {
+      width: 450px;
+      background: rgba(255, 255, 255, 0.01);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 60px 40px;
+      position: relative;
+      transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .server-focus:hover {
+      transform: translateY(-10px);
+      border-color: var(--rw-color);
+      box-shadow: 0 0 80px rgba(255, 77, 77, 0.15);
+    }
+
+    .status-badge {
+      position: absolute; top: 30px; right: 30px;
+      padding: 6px 15px; border-radius: 100px;
+      font-size: 0.6rem; font-weight: 800; letter-spacing: 1px;
+      background: rgba(0, 255, 150, 0.1);
+      color: #00ff96; border: 1px solid rgba(0, 255, 150, 0.2);
+      text-transform: uppercase;
+    }
+
+    .server-icon {
+      font-size: 5rem;
+      color: var(--rw-color);
+      margin-bottom: 30px;
+      filter: drop-shadow(0 0 30px rgba(255, 77, 77, 0.4));
+    }
+
+    .server-focus h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.2rem; margin-bottom: 20px; letter-spacing: 1px;
+    }
+
+    .server-focus p {
+      color: var(--text-dim); font-size: 0.95rem; line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .feature-list {
+      display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    }
+
+    .feature-tag {
+      font-size: 0.7rem; color: #fff; background: rgba(255,255,255,0.03);
+      padding: 8px 16px; border-radius: 12px; border: 1px solid var(--border);
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    /* Футер */
+    footer {
+      position: absolute; bottom: 40px; width: 100%; text-align: center;
+    }
+    .footer-text {
+      font-size: 0.65rem; color: var(--text-dim);
+      letter-spacing: 4px; text-transform: uppercase;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="universe">
+  <div class="grid-bg"></div>
+</div>
+
+<nav>
+  <a href="index.html" class="logo">DELICE</a>
+  <div class="nav-links">
+    <a href="social.html">Сообщество</a>
+    <a href="faq.html">FAQ</a>
+    <a href="server.html" style="color: var(--accent);">Сервера</a>
+    <a href="donate.html">Донат</a>
+  </div>
+</nav>
+
+<div class="main-content">
+  <div class="header-box">
+    <h1>Сервера</h1>
+    <p>Цель - победа</p>
+  </div>
+
+  <div class="server-focus">
+    <div class="status-badge">Undetected</div>
+    <i class="fa-solid fa-fire server-icon"></i>
+    <h2>ReallyWorld</h2>
+    <p>Полная интеграция обходов Matrix и Vulcan. Идеальная калибровка киллауры и автоматизация игровых процессов специально под механики RW.</p>
+
+    <div class="feature-list">
+      <span class="feature-tag">Matrix Bypass</span>
+      <span class="feature-tag">Perfect Aura</span>
+      <span class="feature-tag">Exploit Kit</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p class="footer-text">© 2026 Delice Client</p>
+</footer>
+
+<script>
+  document.onkeydown = e => {
+    if (e.keyCode == 123 || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67))) return false;
+  };
+</script>
+</body>
+</html>
