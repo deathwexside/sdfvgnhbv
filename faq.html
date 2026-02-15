@@ -3,275 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delice Client | База знаний</title>
+    <title>Delice Client | FAQ</title>
 
-    <link rel="icon" type="image/svg+xml" href="logo.png">
+    <link rel="icon" href="img/logo.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #010208;
-            --accent: #005cff;
-            --accent-bright: #00d4ff;
-            --border: rgba(255, 255, 255, 0.05);
-            --text: #ffffff;
-            --text-dim: #707d91;
+            /* Переходим на синий */
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.3);
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.7);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            -webkit-user-select: none; user-select: none;
-        }
+        /* Красивый синий скроллбар */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #02040a; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: #02040a;
+            color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Чистый фон с сеткой как на главной */
-        .universe {
+        .hero-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('img/bg.jpg') center/cover no-repeat;
+            z-index: -3; transition: transform 0.1s ease-out; transform: scale(1.1);
+        }
+
+        #tsparticles {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+        }
+
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            /* Синеватый градиент для атмосферы */
+            background: radial-gradient(circle at center, rgba(0,10,40,0.3) 0%, rgba(2,4,10,0.9) 100%);
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #06122d 0%, #010208 100%);
         }
 
-        .grid-bg {
-            position: absolute; width: 200%; height: 200%;
-            top: -50%; left: -50%;
-            background-image:
-                    linear-gradient(rgba(0, 92, 255, 0.07) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(0, 92, 255, 0.07) 1px, transparent 1px);
-            background-size: 80px 80px;
-            transform: perspective(600px) rotateX(60deg);
-            animation: gridFlow 25s linear infinite;
-        }
-
-        @keyframes gridFlow {
-            from { transform: perspective(600px) rotateX(60deg) translateY(0); }
-            to { transform: perspective(600px) rotateX(60deg) translateY(80px); }
-        }
-
-        /* Навигация - чистая, без границ */
         nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 40px 8%; position: absolute; top: 0; width: 100%; z-index: 100;
+            display: flex; justify-content: flex-start; align-items: center;
+            padding: 12px 8%; background: rgba(10, 10, 15, 0.4);
+            backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
+            position: fixed; top: 0; width: 100%; z-index: 100; gap: 50px;
         }
 
-        .logo {
-            font-family: 'Montserrat', sans-serif; font-size: 1.8rem;
-            letter-spacing: 6px; text-decoration: none; color: #fff;
-            background: linear-gradient(to right, #fff, var(--accent));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
+        .logo-img { height: 40px; }
+        .nav-links { display: flex; gap: 30px; }
         .nav-links a {
-            color: var(--text-dim); text-decoration: none; margin-left: 40px;
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px;
-            font-weight: 600; transition: 0.4s;
+            text-decoration: none; color: var(--text-dim);
+            font-size: 0.9rem; font-weight: 500; transition: 0.2s;
         }
-        .nav-links a:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
+        .nav-links a:hover { color: #fff; }
 
-        /* Контентная часть */
-        .main-content {
-            padding: 150px 10% 100px;
-            max-width: 1000px;
-            margin: 0 auto;
+        .faq-container {
+            max-width: 800px;
+            margin: 150px auto 100px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
         }
 
-        .page-header { text-align: center; margin-bottom: 60px; }
-        .page-header h1 {
-            font-family: 'Montserrat', sans-serif; font-size: clamp(2.5rem, 8vw, 5rem);
-            letter-spacing: -2px; text-transform: uppercase;
-            background: linear-gradient(to bottom, #fff, #444);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .page-header p { color: var(--text-dim); letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem; }
+        .faq-header { text-align: center; margin-bottom: 60px; }
+        .faq-header h1 { font-size: 3rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 15px; }
+        .faq-header p { color: var(--text-dim); font-size: 1.1rem; }
 
-        /* FAQ Карточки - максимально легкие */
-        .faq-card {
-            background: rgba(255, 255, 255, 0.01);
-            backdrop-filter: blur(10px);
+        .faq-item {
+            background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 20px;
             margin-bottom: 15px;
             overflow: hidden;
-            transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
+            backdrop-filter: blur(20px);
+            transition: 0.3s;
         }
 
-        .faq-card:hover {
-            border-color: rgba(0, 92, 255, 0.3);
-            background: rgba(255, 255, 255, 0.03);
-            transform: translateY(-2px);
+        .faq-item:hover {
+            border-color: rgba(0, 102, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .faq-head {
-            padding: 30px; display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; position: relative; z-index: 2;
+        .faq-question {
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
 
-        .faq-head h3 {
-            font-size: 0.95rem; font-weight: 600; letter-spacing: 0.5px;
-            color: rgba(255,255,255,0.8); text-transform: uppercase;
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-dim);
+            line-height: 1.6;
+            padding: 0 30px;
         }
 
-        .icon-box {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: center;
-            transition: 0.4s; color: var(--text-dim);
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding-bottom: 25px;
         }
 
-        .faq-card.active .icon-box {
-            background: var(--accent); color: #fff;
-            transform: rotate(180deg); border-color: var(--accent-bright);
+        .faq-item.active { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
+
+        .arrow {
+            width: 12px; height: 12px;
+            border-right: 2px solid var(--text-dim);
+            border-bottom: 2px solid var(--text-dim);
+            transform: rotate(45deg);
+            transition: 0.3s;
+            margin-bottom: 5px;
         }
 
-        .faq-body {
-            max-height: 0; overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .faq-item.active .arrow { transform: rotate(-135deg); border-color: var(--accent); margin-bottom: -5px; }
 
-        .faq-content {
-            padding: 0 30px 30px; color: var(--text-dim);
-            font-size: 0.9rem; line-height: 1.7;
-        }
+        footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.8rem; }
 
-        .faq-card.active .faq-body { max-height: 400px; }
-
-        code {
-            color: var(--accent-bright); font-family: monospace;
-            background: rgba(0, 92, 255, 0.1); padding: 2px 5px; border-radius: 4px;
-        }
-
-        /* Футер - чистый текст */
-        footer {
-            padding: 60px 0 40px; text-align: center;
-        }
-        .footer-text {
-            font-size: 0.65rem; color: var(--text-dim);
-            letter-spacing: 4px; text-transform: uppercase;
-        }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-<div class="universe">
-    <div class="grid-bg"></div>
-</div>
+<div id="tsparticles"></div>
+<div class="hero-bg" id="bg"></div>
+<div class="overlay"></div>
 
 <nav>
-    <a href="index.html" class="logo">DELICE</a>
+    <a href="index.html">
+        <img src="img/logo.png" alt="Logo" class="logo-img">
+    </a>
     <div class="nav-links">
-        <a href="social.html">Сообщество</a>
-        <a href="faq.html" style="color: var(--accent);">FAQ</a>
-        <a href="server.html">Сервера</a>
-        <a href="donate.html">Донат</a>
+        <a href="https://discord.gg/xF9h8yMk2r">Поддержка</a>
+        <a href="faq.html" style="color: #fff;">Частые вопросы</a>
     </div>
 </nav>
 
-<div class="main-content">
-    <header class="page-header">
-        <h1>FAQ</h1>
-        <p>Центр технической поддержки</p>
-    </header>
+<main class="faq-container">
+    <div class="faq-header">
+        <h1>Появились вопросы?</h1>
+        <p>Мы собрали ответы на самые популярные запросы пользователей.</p>
+    </div>
 
-    <section class="faq-section">
-        <div class="faq-card">
-            <div class="faq-head">
-                <h3>Обновления клиента</h3>
-                <div class="icon-box"><i class="fa-solid fa-chevron-down"></i></div>
-            </div>
-            <div class="faq-body">
-                <div class="faq-content">
-                    Актуальные версии публикуются в Discord и Telegram. Так как автообновления нет, скачивайте новый JAR вручную и заменяйте его в папке версий.
-                </div>
-            </div>
+    <div class="faq-item">
+        <div class="faq-question">
+            Как установить Delice Client?
+            <div class="arrow"></div>
         </div>
-
-        <div class="faq-card">
-            <div class="faq-head">
-                <h3>Процесс установки</h3>
-                <div class="icon-box"><i class="fa-solid fa-chevron-down"></i></div>
-            </div>
-            <div class="faq-body">
-                <div class="faq-content">
-                    Переместите файл в <code>.minecraft/versions/1.16.5</code>. В лаунчере выберите версию "1.16.5" и запустите игру.
-                </div>
-            </div>
+        <div class="faq-answer">
+            Вам нужно перейти на страницу «Скачать», нажать кнопку установки и дождаться завершения загрузки. После этого запустите скачанный файл и следуйте инструкциям установщика.
         </div>
+    </div>
 
-        <div class="faq-card">
-            <div class="faq-head">
-                <h3>Конфиги и скрины</h3>
-                <div class="icon-box"><i class="fa-solid fa-chevron-down"></i></div>
-            </div>
-            <div class="faq-body">
-                <div class="faq-content">
-                    Настройки лежат в <code>/delice/configs</code>. Скриншоты сохраняются в стандартную папку лаунчера <code>/screenshots</code>.
-                </div>
-            </div>
+    <div class="faq-item">
+        <div class="faq-question">
+            Безопасно ли использовать клиент?
+            <div class="arrow"></div>
         </div>
-
-        <div class="faq-card">
-            <div class="faq-head">
-                <h3>Оптимизация FPS</h3>
-                <div class="icon-box"><i class="fa-solid fa-chevron-down"></i></div>
-            </div>
-            <div class="faq-body">
-                <div class="faq-content">
-                    Выделите 4ГБ ОЗУ. Отключите Blur и Particles в настройках Visuals для максимальной производительности.
-                </div>
-            </div>
+        <div class="faq-answer">
+            Да, Delice Client проходит строгую проверку. Мы не собираем ваши личные данные и не используем скрытый софт. Весь код оптимизирован только для улучшения производительности игры.
         </div>
+    </div>
 
-        <div class="faq-card">
-            <div class="faq-head">
-                <h3>Безопасность</h3>
-                <div class="icon-box"><i class="fa-solid fa-chevron-down"></i></div>
-            </div>
-            <div class="faq-body">
-                <div class="faq-content">
-                    Мы используем продвинутые обходы, но помните о рисках. Используйте функции с умом на крупных проектах.
-                </div>
-            </div>
+    <div class="faq-item">
+        <div class="faq-question">
+            Повышает ли клиент FPS?
+            <div class="arrow"></div>
         </div>
-
-        <div class="faq-card">
-            <div class="faq-head">
-                <h3>Назначение клавиш</h3>
-                <div class="icon-box"><i class="fa-solid fa-chevron-down"></i></div>
-            </div>
-            <div class="faq-body">
-                <div class="faq-content">
-                    В ClickGUI (RSHIFT) нажмите на модуль колёсиком мыши, чтобы установить бинд на любую кнопку.
-                </div>
-            </div>
+        <div class="faq-answer">
+            Безусловно. Благодаря нашим алгоритмам оптимизации рендеринга и переработанному ядру, прирост FPS в среднем составляет от 30% до 60% в зависимости от вашего железа.
         </div>
-    </section>
+    </div>
 
-    <footer>
-        <p class="footer-text">© 2026 Delice Client</p>
-    </footer>
-</div>
+    <div class="faq-item">
+        <div class="faq-question">
+            Где я могу найти техподдержку?
+            <div class="arrow"></div>
+        </div>
+        <div class="faq-answer">
+            Вы можете связаться с нами через официальный Discord сервер или написать в раздел «Поддержка» на нашем сайте. Мы отвечаем в течение 24 часов.
+        </div>
+    </div>
+</main>
+
+<footer>© 2026 Delice Project. Все права защищены.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/tsparticles-all@2.12.0/tsparticles.all.bundle.min.js"></script>
 
 <script>
-    document.querySelectorAll('.faq-head').forEach(head => {
-        head.addEventListener('click', () => {
-            head.parentElement.classList.toggle('active');
+    // Инициализация синих частиц
+    (async () => {
+        await tsParticles.load("tsparticles", {
+            particles: {
+                number: { value: 60, density: { enable: true, area: 800 } },
+                color: { value: "#0066ff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.4, random: true },
+                size: { value: { min: 1, max: 3 } },
+                links: {
+                    enable: true,
+                    distance: 150,
+                    color: "#0066ff",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: { enable: true, speed: 1.2, direction: "none", outModes: { default: "out" } }
+            },
+            interactivity: {
+                events: {
+                    onHover: { enable: true, mode: "grab" },
+                    onClick: { enable: true, mode: "push" }
+                },
+                modes: { grab: { distance: 200, links: { opacity: 0.5 } } }
+            },
+            detectRetina: true
+        });
+    })();
+
+    // Параллакс фона
+    const bg = document.getElementById('bg');
+    document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX - window.innerWidth / 2) * 0.01;
+        const y = (e.clientY - window.innerHeight / 2) * 0.01;
+        bg.style.transform = `scale(1.1) translate(${x}px, ${y}px)`;
+    });
+
+    // Логика аккордеона
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            faqItems.forEach(i => {
+                if (i !== item) i.classList.remove('active');
+            });
+            item.classList.toggle('active');
         });
     });
 
-    document.onkeydown = e => {
-        if (e.keyCode == 123 || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67))) return false;
+    // Защита кода
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 73))) return false;
     };
 </script>
+
 </body>
 </html>
