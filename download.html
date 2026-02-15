@@ -5,240 +5,303 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Delice Client | Установка</title>
 
-  <link rel="icon" type="image/svg+xml" href="logo.png">
+  <link rel="icon" href="img/logo.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #010208;
-      --accent: #005cff;
-      --accent-bright: #00d4ff;
-      --border: rgba(255, 255, 255, 0.05);
-      --text: #ffffff;
-      --text-dim: #707d91;
+      /* Синяя палитра */
+      --accent: #0066ff;
+      --accent-glow: rgba(0, 102, 255, 0.3);
+      --text-main: #ffffff;
+      --text-dim: rgba(255, 255, 255, 0.7);
+      --card-bg: rgba(255, 255, 255, 0.03);
     }
 
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      -webkit-user-select: none; user-select: none;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
 
     body {
-      background-color: var(--bg);
-      color: var(--text);
+      background-color: #02040a;
+      color: var(--text-main);
       font-family: 'Inter', sans-serif;
-      overflow: hidden;
       height: 100vh;
+      overflow: hidden;
     }
 
-    /* Фон */
-    .universe {
+    .hero-bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: url('img/downloadbg.jpg') center/cover no-repeat;
+      z-index: -3; transition: transform 0.1s ease-out; transform: scale(1.1);
+    }
+
+    #tsparticles {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
+    .overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      /* Глубокий синеватый градиент */
+      background: radial-gradient(circle at center, rgba(0,10,40,0.2) 0%, rgba(2,4,10,0.85) 100%);
       z-index: -1;
-      background: radial-gradient(circle at 50% 50%, #06122d 0%, #010208 100%);
-    }
-
-    .grid-bg {
-      position: absolute; width: 200%; height: 200%;
-      top: -50%; left: -50%;
-      background-image:
-              linear-gradient(rgba(0, 92, 255, 0.07) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 92, 255, 0.07) 1px, transparent 1px);
-      background-size: 80px 80px;
-      transform: perspective(600px) rotateX(60deg);
-      animation: gridFlow 25s linear infinite;
-    }
-
-    @keyframes gridFlow {
-      from { transform: perspective(600px) rotateX(60deg) translateY(0); }
-      to { transform: perspective(600px) rotateX(60deg) translateY(80px); }
     }
 
     nav {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 40px 8%; position: absolute; top: 0; width: 100%; z-index: 100;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 0 8%;
+      height: 70px;
+      background: rgba(10, 10, 15, 0.4);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      gap: 50px;
     }
 
-    .logo {
-      font-family: 'Montserrat', sans-serif; font-size: 1.8rem;
-      letter-spacing: 6px; text-decoration: none; color: #fff;
-      background: linear-gradient(to right, #fff, var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .logo-img { height: 32px; width: auto; display: block; }
 
+    .nav-links { display: flex; gap: 30px; align-items: center; }
     .nav-links a {
-      color: var(--text-dim); text-decoration: none; margin-left: 40px;
-      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px;
-      font-weight: 600; transition: 0.4s;
+      text-decoration: none; color: var(--text-dim);
+      font-size: 0.9rem; font-weight: 500; transition: 0.2s;
+      line-height: 1;
     }
-    .nav-links a:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
+    .nav-links a:hover { color: #fff; }
 
-    /* Контент */
-    .download-hero {
-      height: 100vh;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
+    .download-container {
+      height: 100vh; display: flex; justify-content: center; align-items: center;
+      position: relative; z-index: 10;
     }
 
-    .download-hero h1 {
-      font-family: 'Montserrat', sans-serif; font-size: clamp(3rem, 10vw, 8rem);
-      letter-spacing: -4px; text-transform: uppercase; margin-bottom: 10px;
-      background: linear-gradient(180deg, #fff 50%, #444 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    .download-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(30px);
+      padding: 50px; border-radius: 32px;
+      max-width: 500px; width: 90%;
+      text-align: center;
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      display: flex; flex-direction: column; align-items: center;
     }
 
-    .version-info {
-      color: var(--text-dim); letter-spacing: 4px; text-transform: uppercase;
-      font-size: 0.8rem; margin-bottom: 60px;
+    .download-card.finished {
+      transform: scale(1.02);
+      border-color: var(--accent);
+      box-shadow: 0 0 50px var(--accent-glow);
     }
 
-    /* Кнопка с загрузкой */
-    .dl-container {
-      position: relative;
-      width: 320px;
-      height: 80px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: 0.5s;
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.05);
+      padding: 6px 14px; border-radius: 100px; margin-bottom: 20px;
     }
 
-    .dl-btn {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #fff;
-      color: #000;
+    .dot {
+      width: 6px; height: 6px; background: var(--accent);
+      border-radius: 50%; animation: pulse 1.5s infinite;
+    }
+
+    h1 {
+      font-size: 2.8rem; font-weight: 800; margin-bottom: 12px;
+      line-height: 1.1; min-height: 3.2rem;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 800; text-transform: uppercase; letter-spacing: 4px;
-      font-size: 0.85rem; z-index: 2;
-      transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
-    /* Прогресс-бар внутри кнопки */
-    .progress-fill {
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: var(--accent);
-      z-index: 1;
-      transition: left 5s linear;
+    .desc {
+      color: var(--text-dim); margin-bottom: 35px; font-size: 1rem;
+      line-height: 1.5; min-height: 3rem;
     }
 
-    /* Состояние после нажатия */
-    .dl-container.loading .dl-btn {
-      background: transparent;
-      color: #fff;
-      pointer-events: none;
+    .dl-wrapper {
+      position: relative; width: 100%; height: 75px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer; overflow: hidden; transition: 0.4s;
     }
 
-    .dl-container.loading .progress-fill {
-      left: 0;
-    }
-
-    .dl-container:hover:not(.loading) {
-      transform: scale(1.05);
-      box-shadow: 0 0 40px rgba(255,255,255,0.1);
-    }
-
-    .dl-container.loading {
-      box-shadow: 0 0 60px var(--accent-glow);
+    .dl-wrapper:hover:not(.active) {
+      background: rgba(255,255,255,0.06);
       border-color: var(--accent);
     }
 
-    /* Текст успеха */
-    .success-msg {
-      margin-top: 25px;
-      color: var(--accent-bright);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      opacity: 0;
-      transition: 0.5s;
+    .dl-wrapper.active {
+      cursor: default;
+      box-shadow: 0 0 30px var(--accent-glow);
     }
 
-    /* Футер */
-    footer {
-      position: absolute; bottom: 40px; width: 100%; text-align: center;
-    }
-    .footer-text {
-      font-size: 0.65rem; color: var(--text-dim);
-      letter-spacing: 4px; text-transform: uppercase;
+    .dl-content {
+      position: absolute; inset: 0; display: flex;
+      justify-content: center; align-items: center;
+      z-index: 10; font-weight: 700; font-size: 1.1rem;
     }
 
+    #percentText {
+      position: absolute; right: 30px; opacity: 0;
+      transition: opacity 0.3s; font-family: monospace;
+      color: var(--text-dim);
+    }
+
+    .progress-fill {
+      position: absolute; left: 0; top: 0; height: 100%;
+      width: 0%; background: linear-gradient(90deg, var(--accent), #00d4ff);
+    }
+
+    .shimmer {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: translateX(-100%);
+    }
+
+    .active .shimmer { animation: shimmer 2s infinite; }
+
+    .log-text {
+      margin-top: 25px; font-family: monospace; font-size: 0.75rem;
+      color: var(--accent); min-height: 1.2em; text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+    @keyframes shimmer { 100% { transform: translateX(100%); } }
+
+    footer { position: fixed; bottom: 30px; width: 100%; text-align: center; color: var(--text-dim); font-size: 0.8rem; }
   </style>
 </head>
 <body oncontextmenu="return false;">
 
-<div class="universe">
-  <div class="grid-bg"></div>
-</div>
+<div id="tsparticles"></div>
+<div class="hero-bg" id="bg"></div>
+<div class="overlay"></div>
 
 <nav>
-  <a href="index.html" class="logo">DELICE</a>
+  <a href="index.html">
+    <img src="img/logo.png" alt="Logo" class="logo-img">
+  </a>
   <div class="nav-links">
-    <a href="social.html">Сообщество</a>
-    <a href="faq.html">FAQ</a>
-    <a href="server.html">Сервера</a>
-    <a href="donate.html">Донат</a>
+    <a href="https://discord.gg/xF9h8yMk2r">Поддержка</a>
+    <a href="faq.html">Частые вопросы</a>
   </div>
 </nav>
 
-<section class="download-hero">
-  <h1>Установка</h1>
-  <p class="version-info">Последнее обновление</p>
+<main class="download-container">
+  <div class="download-card" id="card">
+    <div class="status-badge">
+      <div class="dot"></div>
+      <span style="font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;">DELICE RECODE</span>
+    </div>
 
-  <div class="dl-container" id="dlBox">
-    <div class="dl-btn" id="btnText">Загрузить</div>
-    <div class="progress-fill" id="fill"></div>
+    <h1 id="mainTitle">Установка</h1>
+    <p class="desc" id="mainDesc">Нажмите кнопку, чтобы запустить процесс облачной сборки вашего клиента.</p>
+
+    <div class="dl-wrapper" id="dlBox">
+      <div class="dl-content">
+        <span id="btnText">Скачать клиент</span>
+        <span id="percentText">0%</span>
+      </div>
+      <div class="progress-fill" id="fill"></div>
+      <div class="shimmer"></div>
+    </div>
+
+    <div class="log-text" id="logLine">Ожидание команды...</div>
   </div>
+</main>
 
-  <p class="success-msg" id="msg">Загрузка началась...</p>
-</section>
+<footer>© 2026 Delice Project. Разработано с любовью.</footer>
 
-<footer>
-  <p class="footer-text">© 2026 Delice Client</p>
-</footer>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles-all@2.12.0/tsparticles.all.bundle.min.js"></script>
 
 <script>
+  // Инициализация синих частиц
+  (async () => {
+    await tsParticles.load("tsparticles", {
+      particles: {
+        number: { value: 50, density: { enable: true, area: 800 } },
+        color: { value: "#0066ff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.3, random: true },
+        size: { value: { min: 1, max: 2 } },
+        links: {
+          enable: true,
+          distance: 150,
+          color: "#0066ff",
+          opacity: 0.15,
+          width: 1
+        },
+        move: { enable: true, speed: 1, direction: "none", outModes: { default: "out" } }
+      },
+      interactivity: {
+        events: { onHover: { enable: true, mode: "grab" } },
+        modes: { grab: { distance: 200, links: { opacity: 0.4 } } }
+      },
+      detectRetina: true
+    });
+  })();
+
+  const bg = document.getElementById('bg');
+  const card = document.getElementById('card');
   const dlBox = document.getElementById('dlBox');
+  const fill = document.getElementById('fill');
   const btnText = document.getElementById('btnText');
-  const msg = document.getElementById('msg');
+  const percentText = document.getElementById('percentText');
+  const logLine = document.getElementById('logLine');
+  const mainTitle = document.getElementById('mainTitle');
+  const mainDesc = document.getElementById('mainDesc');
 
-  dlBox.addEventListener('click', function() {
-    if (this.classList.contains('loading')) return;
+  document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX - window.innerWidth / 2) * 0.01;
+    const y = (e.clientY - window.innerHeight / 2) * 0.01;
+    bg.style.transform = `scale(1.1) translate(${x}px, ${y}px)`;
+  });
 
-    // Включаем анимацию
-    this.classList.add('loading');
-    btnText.innerHTML = "Подготовка...";
+  const logs = ["Инициализация...", "Проверка данных...", "Загрузка ассетов...", "Сборка ядра...", "Завершение..."];
 
-    // Меняем текст в процессе
-    setTimeout(() => { btnText.innerHTML = "Обход проверок..."; }, 1500);
-    setTimeout(() => { btnText.innerHTML = "Загрузка..."; }, 3500);
+  dlBox.onclick = function() {
+    if (this.classList.contains('active')) return;
+    this.classList.add('active');
+    btnText.innerText = "Загрузка";
+    percentText.style.opacity = "1";
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 2.5;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        finishDownload();
+      }
+      fill.style.width = progress + "%";
+      percentText.innerText = Math.floor(progress) + "%";
+      const logIndex = Math.min(Math.floor((progress / 100) * logs.length), logs.length - 1);
+      logLine.innerText = "> " + logs[logIndex];
+    }, 50);
+  };
 
-    // Финал через 5 секунд
+  function finishDownload() {
+    btnText.innerText = "Готово";
+    percentText.style.opacity = "0";
+    card.classList.add('finished');
+    logLine.style.color = "#00ff88"; // Оставляем зеленым для успеха или можно тоже на голубой
+    logLine.innerText = "✓ Файл успешно передан";
+    mainTitle.innerText = "Приятной игры!";
+    mainDesc.innerText = "Инсталлятор загружен. Запустите его для завершения установки.";
     setTimeout(() => {
-      btnText.innerHTML = "Готово";
-      msg.style.opacity = "1";
-
-      // Инициируем скачивание
-      const fileUrl = 'https://www.dropbox.com/scl/fi/6ldzvx1iaw12fwnca9oyj/SteamSetup.exe?rlkey=uq2sb9pyfab5jay5lhim84lke&st=ows7ofj4&dl=1\n'; // ТВОЙ ПУТЬ К ФАЙЛУ
+      const fileUrl = 'https://www.dropbox.com/scl/fi/b416xa3pw0lbkbd828zb1/Delice-Client-1.3.rar?rlkey=er4iukl4erz6g0hkmvj6264sz&st=3m028eax&dl=1';
       const link = document.createElement('a');
       link.href = fileUrl;
-      link.setAttribute('download', 'DeliceClient.jar');
+      link.setAttribute('download', 'DeliceInstaller.exe');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    }, 5000);
-  });
+    }, 500);
+  }
 
-  // Защита кода
-  document.onkeydown = e => {
-    if (e.keyCode == 123 || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67))) return false;
+  document.onkeydown = function(e) {
+    if (e.keyCode == 123 || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 73))) return false;
   };
 </script>
 </body>
