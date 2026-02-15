@@ -3,218 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delice Client | Главная</title>
-    <link rel="icon" type="image/svg+xml" href="logo.png">
+    <title>Delice Client | Командуй игрой</title>
+
+    <link rel="icon" href="img/logo.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #010208;
-            --accent: #005cff;
-            --accent-glow: rgba(0, 92, 255, 0.4);
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #ffffff;
-            --text-dim: #707d91;
+            /* Новая темно-синяя палитра */
+            --accent: #0066ff;
+            --accent-hover: #0052cc;
+            --accent-glow: rgba(0, 102, 255, 0.3);
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.7);
+            --nav-bg: rgba(10, 10, 15, 0.4);
         }
 
-        /* Полный запрет копирования */
         * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            -webkit-user-select: none; user-select: none;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: #02040a;
+            color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Убираем скролл, так как всё на одном экране */
             height: 100vh;
+            overflow: hidden;
         }
 
-        /* Фон */
-        .universe {
+        .hero-bg {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('img/bg.jpg') center/cover no-repeat;
+            z-index: -3;
+            transition: transform 0.1s ease-out;
+        }
+
+        #tsparticles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Добавили легкий синеватый оттенок в градиент */
+            background: radial-gradient(circle at center, rgba(0,10,40,0.3) 0%, rgba(2,4,10,0.85) 100%);
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #06122d 0%, #010208 100%);
         }
 
-        .grid-bg {
-            position: absolute;
-            width: 200%; height: 200%;
-            top: -50%; left: -50%;
-            background-image:
-                    linear-gradient(rgba(0, 92, 255, 0.07) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(0, 92, 255, 0.07) 1px, transparent 1px);
-            background-size: 80px 80px;
-            transform: perspective(600px) rotateX(60deg);
-            animation: gridFlow 25s linear infinite;
-        }
-
-        @keyframes gridFlow {
-            from { transform: perspective(600px) rotateX(60deg) translateY(0); }
-            to { transform: perspective(600px) rotateX(60deg) translateY(80px); }
-        }
-
-        /* Навигация */
         nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 40px 8%; position: absolute; top: 0; width: 100%; z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 8%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
         }
 
-        .logo {
-            font-family: 'Montserrat', sans-serif; font-size: 1.8rem;
-            letter-spacing: 6px; text-decoration: none; color: #fff;
-            background: linear-gradient(to right, #fff, var(--accent));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 50px;
         }
 
-        .nav-links { display: flex; align-items: center; gap: 40px; }
+        .logo-img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
         .nav-links a {
-            color: var(--text-dim); text-decoration: none; font-size: 0.75rem;
-            text-transform: uppercase; letter-spacing: 3px; font-weight: 600;
-            transition: 0.4s ease;
-        }
-        .nav-links a:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
-
-        /* Hero Main */
-        .hero {
-            height: 100vh;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center; position: relative;
-        }
-
-        .hero h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(5rem, 18vw, 12rem);
-            line-height: 0.8;
-            letter-spacing: -8px;
-            margin-bottom: 25px;
-            background: linear-gradient(180deg, #fff 40%, rgba(255,255,255,0) 150%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: titleIn 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-            filter: drop-shadow(0 0 30px rgba(0, 92, 255, 0.2));
-        }
-
-        @keyframes titleIn {
-            from { opacity: 0; transform: translateY(50px) scale(0.9); filter: blur(20px); }
-            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-
-        .description-box {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            padding: 15px 30px;
-            border-radius: 100px;
-            border: 1px solid var(--border);
-            margin-bottom: 50px;
-            max-width: 80%;
-            animation: fadeIn 2s ease forwards;
-        }
-
-        .hero p {
-            color: var(--text-dim);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; } to { opacity: 1; }
-        }
-
-        /* Кнопка */
-        .cta-btn {
-            padding: 25px 60px;
-            background: #fff;
-            color: #000;
             text-decoration: none;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            font-size: 0.85rem;
-            transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            border-radius: 0;
-            position: relative;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.2s ease;
         }
 
-        .cta-btn:hover {
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .btn-install {
             background: var(--accent);
             color: #fff;
-            box-shadow: 0 0 60px var(--accent-glow);
-            transform: scale(1.1);
+            padding: 10px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s cubic-bezier(0.2, 0, 0, 1);
+            box-shadow: 0 4px 15px var(--accent-glow);
         }
 
-        /* Футер */
-        footer {
-            position: absolute; bottom: 40px; width: 100%;
-            text-align: center; z-index: 10;
-        }
-        .footer-text {
-            font-size: 0.65rem; color: var(--text-dim);
-            letter-spacing: 4px; text-transform: uppercase;
+        .btn-install:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 102, 255, 0.5);
         }
 
-        /* Декоративное свечение */
-        .glow-orb {
-            position: absolute;
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(0, 92, 255, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-            filter: blur(50px);
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
         }
 
+        .hero-section h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero-section p {
+            max-width: 650px;
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 45px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn-sub {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            padding: 18px 40px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .btn-sub:hover {
+            transform: scale(1.03);
+            background: rgba(255, 255, 255, 0.1);
+            filter: brightness(1.1);
+            border-color: var(--accent);
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-<div class="universe">
-    <div class="grid-bg"></div>
-</div>
+<div id="tsparticles"></div>
 
-<div class="glow-orb" id="orb"></div>
+<div class="hero-bg" id="bg"></div>
+<div class="overlay"></div>
 
 <nav>
-    <a href="index.html" class="logo">DELICE</a>
-    <div class="nav-links">
-        <a href="social.html">Сообщество</a>
-        <a href="faq.html">FAQ</a>
-        <a href="server.html">Сервера</a>
-        <a href="donate.html">Донат</a>
+    <div class="nav-left">
+        <a href="index.html">
+            <img src="img/logo.png" alt="Delice Logo" class="logo-img">
+        </a>
+        <div class="nav-links">
+            <a href="https://discord.gg/xF9h8yMk2r">Поддержка</a>
+            <a href="faq.html">Частые вопросы</a>
+        </div>
+    </div>
+    <div class="nav-right">
+        <a href="download.html" class="btn-install">Установить</a>
     </div>
 </nav>
 
-<section class="hero">
-    <h1>DELICE</h1>
-    <div class="description-box">
-        <p>Играй с командой Delice</p>
+<section class="hero-section">
+    <h1>Командуй игрой.<br>Играй с Delice.</h1>
+    <p>Minecraft-клиент, созданный для тех, кто играет осознанно. Контроль, информация и скорость — в одном месте.</p>
+
+    <div class="cta-group">
+        <a href="https://discord.gg/xF9h8yMk2r" class="btn-sub">Связь с поддержкой</a>
     </div>
-    <a href="download.html" class="cta-btn">Присоединиться</a>
 </section>
 
-<footer>
-    <p class="footer-text">© 2026 Delice Client</p>
-</footer>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles-all@2.12.0/tsparticles.all.bundle.min.js"></script>
 
 <script>
-    // Слежение мягкого свечения за мышью
-    const orb = document.getElementById('orb');
+    (async () => {
+        await tsParticles.load("tsparticles", {
+            particles: {
+                number: { value: 60, density: { enable: true, area: 800 } },
+                color: { value: "#0066ff" }, // Синие частицы
+                shape: { type: "circle" },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    animation: { enable: true, speed: 1, minimumValue: 0.1, sync: false }
+                },
+                size: { value: { min: 1, max: 3 } },
+                links: {
+                    enable: true,
+                    distance: 150,
+                    color: "#0066ff", // Синие линии
+                    opacity: 0.3,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1.2,
+                    direction: "none",
+                    outModes: { default: "out" }
+                }
+            },
+            interactivity: {
+                events: {
+                    onHover: { enable: true, mode: "grab" },
+                    onClick: { enable: true, mode: "push" }
+                },
+                modes: {
+                    grab: { distance: 200, links: { opacity: 0.6 } }
+                }
+            },
+            detectRetina: true
+        });
+    })();
+
+    const bg = document.getElementById('bg');
     document.addEventListener('mousemove', (e) => {
-        const x = e.clientX - 300;
-        const y = e.clientY - 300;
-        orb.style.transform = `translate(${x}px, ${y}px)`;
+        const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+        const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+        bg.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
     });
 
-    // Защита
     document.onkeydown = function(e) {
-        if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 73)) {
+        if (e.keyCode == 123 || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 73))) {
             return false;
         }
     };
